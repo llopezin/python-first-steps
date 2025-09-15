@@ -1,0 +1,43 @@
+## 🧪 EXERCISE: Build a `Library` System
+
+### 🔧 Goal:
+Create a `Library` class that tracks books. Use:
+
+- `@staticmethod` for simple utility
+- `@classmethod` for alternative constructor
+- **Class state** to store shared data (like a total number of books)
+- `self` for instance-specific data
+
+---
+
+### ✍️ Requirements:
+
+#### ✅ Instance attributes:
+- `title`
+- `author`
+- `pages`
+
+#### ✅ Class state:
+- A class variable `total_books` that tracks how many books have been created.
+
+#### ✅ Constructor (`__init__`):
+- Sets the instance attributes
+- Increments `total_books`
+
+#### ✅ Alternative constructor:
+- A class method `from_string(cls, book_string)` that takes a string like:
+  
+  `"The Hobbit;J.R.R. Tolkien;310"`
+
+  and returns a new `Library` instance.
+
+#### ✅ Static method:
+- A method `is_lengthy(pages)` that returns `True` if a book has more than **300 pages**.
+
+#### ✅ Print info:
+- A method `info(self)` that prints the book details.
+
+---
+
+### 💡 Bonus (optional):
+Add a class method `get_total_books(cls)` that returns the value of `total_books`.
