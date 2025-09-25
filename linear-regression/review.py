@@ -1,6 +1,6 @@
 import numpy as np
 
-# Size(ft) Bedrooms	Floors	Age 
+# Size(ft) Bedrooms	Floors	Age
 # 2104	   5	    1	    45	
 # 1416	   3	    2	    40	
 # 852 	   2	    1	    35	
@@ -8,19 +8,19 @@ import numpy as np
 
 # Input (features)
 X = np.array([
-    [2104, 5, 1, 45],
-    [1416, 3, 2, 40],
-    [852, 2, 1, 35],
+    [2.104, 5, 1, 4.5],
+    [1.416, 3, 2, 4.0],
+    [0.852, 2, 1, 3.5],
 ])
 
 # Output (target)
-y = np.array([460, 232, 178 ])
+y = np.array([460, 232, 178])
 
 # Model
 b = 0
-w = np.array([1,1,1,1])
-alpha = .001
-max_iterations = 100000
+w = np.array([0.1,0.1,0.1,0.1])
+alpha = .01
+max_iterations = 1000
 iteration = 0
 
 # 1. Aplicar la función de coste
@@ -41,7 +41,7 @@ def get_model_mean_error(w, b):
     for i, feature_prediction in enumerate(predictions):
         errors_sum = errors_sum + get_error_per_feature(feature_prediction, i)**2
     
-    error_mean = errors_sum / len(predictions)*2
+    error_mean = errors_sum / (len(predictions)*2)
     return error_mean
 
 # 1.3 Calcular derivada de error sobre w, es decir, el ratio al que aumenta el error con respecto a w cuando w tiene un valor x
@@ -50,9 +50,9 @@ def get_error_derivate_w(w, b, w_x_index):
     errors_sum = 0
 
     for i, feature_prediction in enumerate(predictions):
-        errors_sum = errors_sum + get_error_per_feature(feature_prediction, i)*predictions[w_x_index]
+        errors_sum = errors_sum + get_error_per_feature(feature_prediction, i)*X[i][w_x_index]
     
-    return errors_sum / predictions
+    return errors_sum / len(predictions)
 
 # 1.4 Calcular derivada de error sobre b, es decir, el ratio al que aumenta el error con respecto a b cuando b tiene un valor x
 def get_error_derivate_b(w, b):
@@ -62,44 +62,43 @@ def get_error_derivate_b(w, b):
     for i, feature_prediction in enumerate(predictions):
         errors_sum = errors_sum + get_error_per_feature(feature_prediction, i)
     
-    return errors_sum / predictions
+    return errors_sum / len(predictions)
 
 # 2. Aplicar la función de corrección del modelo
 def get_new_w(w ,b, w_x_index):
-    print('w', get_error_derivate_w(w, b, w_x_index))
-    new_w = w - alpha * get_error_derivate_w(w, b, w_x_index)
+    new_w = w[w_x_index] - alpha * get_error_derivate_w(w, b, w_x_index)
     return new_w
 
 def get_new_b(w,b):
     new_b = b - alpha * get_error_derivate_b(w, b)
     return new_b
 
+# El problema de esta aplicación es el uso de recursión qu elimita el número de iteraciones posible
+# TO DO - mejorar implementación utilizando loops
 def run(w,b):
     model_error = get_model_mean_error(w, b)
-    print(iteration)
-    print(model_error)
 
     new_b = get_new_b(w,b)
-    new_w = np.array([0,0,0,0])
+    new_w = np.array([0.,0.,0.,0.])
 
     for i, w_x in enumerate(w):
-        print(new_w[i])
-        print(get_new_w(w_x, b, i))
-        new_w[i] = get_new_w(w_x, b, i)
-
+        new_w[i] = get_new_w(w, b, i)
+    
     new_model_error = get_model_mean_error(new_w, new_b)
+    print('new error', new_model_error)
 
-    if model_error > new_model_error and iteration < max_iterations:
+
+    if round(new_model_error, 2) > 2:
         run(new_w, new_b)
 
     else: 
         print('Result:')
-        print([w,b])
-        print(new_model_error)
-        return [w,b]
+        print(new_w, new_b)
+        print('Prediction', get_predicted_values(new_w, new_b))
 
 
 run(w, b)
+
 
 # Derivadas
 
