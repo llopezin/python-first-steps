@@ -19,14 +19,15 @@ alpha = .001
 max_iterations = 100000
 
 
-y_i_prediction = lambda x_i, w = w, b = b: w*x_i+b
+prediction = lambda x_i, w = w, b = b: w*x_i+b
 
 # Cost function
+# Aquí calculamos el error entre predicción y output de media de todas las features
 def calculate_error(X = X, y = y, b = b, w = w):
     error = 0
     
     for i in range(len(X)):
-        error = error + (y_i_prediction(X[i], w = w, b = b) - y[i])**2
+        error = error + (prediction(X[i], w = w, b = b) - y[i])**2
 
     return error/(2*len(X))
 

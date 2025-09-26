@@ -85,10 +85,12 @@ def run(w,b):
         new_w[i] = get_new_w(w, b, i)
     
     new_model_error = get_model_mean_error(new_w, new_b)
+    print('old error', model_error)
     print('new error', new_model_error)
+    print('over 1.9', round(new_model_error, 2))
 
 
-    if round(new_model_error, 2) > 2:
+    if model_error > new_model_error and round(new_model_error, 2) >= 1.99:
         run(new_w, new_b)
 
     else: 
